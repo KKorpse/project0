@@ -9,12 +9,10 @@ void ThreadPool::WorkerThread()
 	while (true)
 	{
 		auto pWork = m_WorkQueue.GetWork();
-		if (pWork == nullptr)
+		if (pWork)
 		{
-			break;
+			pWork->Run();
 		}
-
-		pWork->Run();
 	}
 }
 
@@ -35,7 +33,4 @@ void ThreadPool::Shutdown()
 	}
 }
 
-void ThreadPool::AddWork(std::unique_ptr<Work> pWork)
-{
-    m_WorkQueue.AddWork(std::move(pWork));
-}
+void ThreadPool::AddWork(std::unique_ptr<Work> pWork) { m_WorkQueue.AddWork(std::move(pWork)); }
