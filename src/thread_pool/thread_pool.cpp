@@ -1,4 +1,4 @@
-#include "ThreadPool.h"
+#include "thread_pool.h"
 
 ThreadPool::ThreadPool(int32_t iNumThreads) { m_iNumThreads = iNumThreads; }
 
@@ -20,7 +20,7 @@ void ThreadPool::Init()
 {
 	for (int32_t i = 0; i < m_iNumThreads; i++)
 	{
-		m_vecMaxThreads.push_back(std::thread(&ThreadPool::WorkerThread, this));
+		m_vecThreads.push_back(std::thread(&ThreadPool::WorkerThread, this));
 	}
 }
 
@@ -29,8 +29,8 @@ void ThreadPool::Shutdown()
 {
 	for (int32_t i = 0; i < m_iNumThreads; i++)
 	{
-		m_vecMaxThreads[i].join();
+		m_vecThreads[i].join();
 	}
 }
 
-void ThreadPool::AddWork(std::unique_ptr<Work> pWork) { m_WorkQueue.AddWork(std::move(pWork)); }
+void ThreadPool::AddWork(std::unique_ptr<Task> pWork) { m_WorkQueue.AddWork(std::move(pWork)); }

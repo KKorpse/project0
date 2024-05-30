@@ -1,4 +1,4 @@
-#include "EchoServer.h"
+#include "echo_server.h"
 #include <memory>
 
 EchoServer::EchoServer(int iPort, int iThreadPoolSize)
@@ -32,7 +32,7 @@ void EchoServer::Start()
 				    break;
 			    }
 			    std::cout << "Accepted connection" << std::endl;
-			    std::unique_ptr<Work> pWork(new Work(
+			    std::unique_ptr<Task> pWork(new Task(
 			        [iClientSocket]()
 			        {
 				        std::string sMessage = ServerSocket::ReadFrom(iClientSocket);

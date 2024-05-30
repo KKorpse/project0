@@ -1,4 +1,4 @@
-#include "WorkQueue.h"
+#include "task_queue.h"
 #include <functional>
 #include <queue>
 #include <thread>
@@ -9,7 +9,7 @@ class ThreadPool
   private:
 	int32_t m_iNumThreads;
 
-	std::vector<std::thread> m_vecMaxThreads;
+	std::vector<std::thread> m_vecThreads;
 
 	WorkQueue m_WorkQueue;
 
@@ -21,5 +21,5 @@ class ThreadPool
 
 	void Init();
 	void Shutdown();
-  void AddWork(std::unique_ptr<Work> pWork);
+  void AddWork(std::unique_ptr<Task> pWork);
 };

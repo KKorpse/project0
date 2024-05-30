@@ -1,13 +1,13 @@
 #include <functional>
 
-class Work
+class Task
 {
   private:
 	std::function<void()> m_fnTask;
 
   public:
-	Work(std::function<void()> fnTask);
-	~Work();
+	Task(std::function<void()> fnTask);
+	~Task();
 
 	void Run();
 };
