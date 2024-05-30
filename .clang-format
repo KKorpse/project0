@@ -1,0 +1,19 @@
+# 使用tab进行缩进，tab等宽于4个空格
+IndentWidth: 4
+TabWidth: 4
+UseTab: ForIndentation
+
+# 一行只写一条语句，但允许一行定义多个相同类型的变量
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+
+# if、for、do、while、case、switch、default等语句自占一行，且if、for、do、while等语句的执行语句部分无论多少都要加括号{与}。代表语句块始末的{与}，必须独占一行。
+BreakBeforeBraces: Allman
+
+# 较长的语句行（>120字符）应当分成多行显示
+ColumnLimit: 120
+
+# { 括号在同一行
+BraceWrapping:
+  AfterClass:      false
