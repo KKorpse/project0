@@ -40,7 +40,7 @@ void ServerSocket::Init()
 
 int ServerSocket::Accept()
 {
-	// TODO: Stronger Error handlling.
+	// TODO: Strongger Error handlling.
 	if (!m_bIsListening)
 	{
 		std::cerr << "Socket is not listening" << std::endl;

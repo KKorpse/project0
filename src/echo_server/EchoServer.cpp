@@ -31,12 +31,13 @@ void EchoServer::Start()
 				    std::cerr << " Error when accepting client connection" << std::endl;
 				    break;
 			    }
-				std::cout << "Accepted connection" << std::endl;
+			    std::cout << "Accepted connection" << std::endl;
 			    std::unique_ptr<Work> pWork(new Work(
 			        [iClientSocket]()
 			        {
 				        std::string sMessage = ServerSocket::ReadFrom(iClientSocket);
 				        ServerSocket::SendTo(sMessage, iClientSocket);
+				        // FIXME: Should I close the socket here?
 				        close(iClientSocket);
 			        }));
 			    m_ThreadPool.AddWork(std::move(pWork));

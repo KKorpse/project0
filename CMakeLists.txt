@@ -33,23 +33,29 @@ include_directories(${GTEST_INCLUDE_DIRS})
 # Collect all test files
 file(GLOB_RECURSE TEST_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "test/*.cpp")
 
-# Add test executable
-add_executable(MyProjectTests ${TEST_SOURCES}  ${SOURCES})
-
-# Link test executable against gtest and gtest_main
-target_link_libraries(MyProjectTests ${GTEST_LIBRARIES} Threads::Threads)
-
-# Include directories for tests
-target_include_directories(MyProjectTests PRIVATE 
-    ${PROJECT_SOURCE_DIR}/src/thread_pool
-    ${PROJECT_SOURCE_DIR}/src/process_pool
-    ${PROJECT_SOURCE_DIR}/src/socket
-    ${PROJECT_SOURCE_DIR}/src/echo_server
-    ${PROJECT_SOURCE_DIR}/src  # 添加这一行，确保测试文件能够找到所有头文件
-)
+# Create a separate executable for each test file
+foreach(TEST_SOURCE ${TEST_SOURCES})
+    # Get the filename without the extension
+    get_filename_component(TEST_NAME ${TEST_SOURCE} NAME_WE)
+    
+    # Create an executable for each test
+    add_executable(${TEST_NAME} ${TEST_SOURCE} ${SOURCES})
+    
+    # Link the test executable against gtest and gtest_main
+    target_link_libraries(${TEST_NAME} ${GTEST_LIBRARIES} Threads::Threads)
+    
+    # Include directories for tests
+    target_include_directories(${TEST_NAME} PRIVATE 
+        ${PROJECT_SOURCE_DIR}/src/thread_pool
+        ${PROJECT_SOURCE_DIR}/src/process_pool
+        ${PROJECT_SOURCE_DIR}/src/socket
+        ${PROJECT_SOURCE_DIR}/src/echo_server
+        ${PROJECT_SOURCE_DIR}/src
+    )
+    
+    # Add the test to CTest
+    add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
+endforeach()
 
 # Enable CTest
 enable_testing()
-
-# Add a test
-add_test(NAME MyProjectTests COMMAND MyProjectTests)
