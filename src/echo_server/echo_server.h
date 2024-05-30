@@ -6,7 +6,7 @@ class EchoServer
 {
   private:
 	int m_iPort = 0;
-	ThreadPool m_ThreadPool;
+	ThreadWorkerPool m_ThreadPool;
 	ServerSocket m_pServerSocket;
 	std::thread m_tdListenThread;
 	bool m_bIsStopped = false;

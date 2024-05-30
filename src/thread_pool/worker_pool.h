@@ -4,20 +4,20 @@
 #include <thread>
 #include <vector>
 
-// class WorkerPool
-// {
-//   private:
-// 	int m_iNumWorkers;
+class WorkerPool
+{
+  protected:
+	int m_iNumWorkers;
 
-// 	WorkQueue m_WorkQueue;
+	WorkQueue m_WorkQueue;
 
-// 	void WorkerThread();
+	void WorkerThread();
 
-//   public:
-// 	ThreadPool(int iNumThreads);
-// 	~ThreadPool();
+  public:
+	WorkerPool(int iNumWorkers) : m_iNumWorkers(iNumWorkers) {}
+	~WorkerPool(){};
 
-// 	void Init();
-// 	void Shutdown();
-//   void AddWork(std::unique_ptr<Task> pWork);
-// };
+	virtual void Init() = 0;
+	virtual void Shutdown() = 0;
+	virtual void AddWork(std::unique_ptr<Task> pWork) = 0;
+};

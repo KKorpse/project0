@@ -1,10 +1,10 @@
 #include "thread_pool.h"
 
-ThreadPool::ThreadPool(int32_t iNumThreads) { m_iNumThreads = iNumThreads; }
+ThreadWorkerPool::ThreadWorkerPool(int32_t iNumThreads) : WorkerPool(iNumThreads) { m_iNumThreads = iNumThreads; }
 
-ThreadPool::~ThreadPool() {}
+ThreadWorkerPool::~ThreadWorkerPool() {}
 
-void ThreadPool::WorkerThread()
+void ThreadWorkerPool::WorkerThread()
 {
 	while (true)
 	{
@@ -16,16 +16,16 @@ void ThreadPool::WorkerThread()
 	}
 }
 
-void ThreadPool::Init()
+void ThreadWorkerPool::Init()
 {
 	for (int32_t i = 0; i < m_iNumThreads; i++)
 	{
-		m_vecThreads.push_back(std::thread(&ThreadPool::WorkerThread, this));
+		m_vecThreads.push_back(std::thread(&ThreadWorkerPool::WorkerThread, this));
 	}
 }
 
 // FIXME: This function is currently not work.
-void ThreadPool::Shutdown()
+void ThreadWorkerPool::Shutdown()
 {
 	for (int32_t i = 0; i < m_iNumThreads; i++)
 	{
@@ -33,4 +33,4 @@ void ThreadPool::Shutdown()
 	}
 }
 
-void ThreadPool::AddWork(std::unique_ptr<Task> pWork) { m_WorkQueue.AddWork(std::move(pWork)); }
+void ThreadWorkerPool::AddWork(std::unique_ptr<Task> pWork) { m_WorkQueue.AddWork(std::move(pWork)); }

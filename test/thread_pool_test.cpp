@@ -4,7 +4,7 @@
 // a Simple test of TheadPool
 TEST(SampleTest, OutputTest)
 {
-	ThreadPool threadPool(4);
+	ThreadWorkerPool threadPool(4);
 	threadPool.Init();
 
 	int32_t cnt = 0;
