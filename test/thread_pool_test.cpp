@@ -14,8 +14,9 @@ TEST(SampleTest, OutputTest)
 		threadPool.AddWork(std::move(pWork));
 	}
 
-    // FIXME: Now the thread pool only work in async mode.
-	// EXPECT_EQ(cnt, 100);
+	sleep(2);
+	// FIXME: Now the thread pool only work in async mode.
+	ASSERT_EQ(cnt, 100);
 }
 
 int main(int argc, char **argv)

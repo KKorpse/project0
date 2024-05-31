@@ -18,6 +18,6 @@ class ThreadWorkerPool : public WorkerPool
 	~ThreadWorkerPool();
 
 	void Init() override;
-	void Shutdown()override;
-  	void AddWork(std::unique_ptr<Work> pWork) override;
+	void Shutdown() override;
+	void AddWork(std::unique_ptr<Work> pWork) override;
 };

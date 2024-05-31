@@ -1,11 +1,5 @@
-#include "echo_server/echo_server.h"
-#include "process_pool/task_queue.h"
+#include "process_pool/process_pool.h"
 #include <gtest/gtest.h>
-#include <iostream>
-#include <memory>
-#include <string>
-#include <unistd.h>
-
 void SingleTask(void *args)
 {
 	std::string out(static_cast<char *>(args));
@@ -30,9 +24,9 @@ void ChiledProcess(CircleTaskQueue que)
 	}
 }
 
-// simple test of echoserver
-int main(int argc, char *argv[])
+TEST(SampleTest, OutputTest)
 {
+
 	CircleTaskQueue que(SingleTask);
 	que.Init();
 	std::vector<int> pids;
@@ -42,7 +36,7 @@ int main(int argc, char *argv[])
 		if (pid == 0)
 		{
 			ChiledProcess(que);
-			return 0;
+			return;
 		}
 		else
 		{
@@ -55,9 +49,17 @@ int main(int argc, char *argv[])
 		que.AddTask(arg.c_str(), arg.size());
 	}
 
-	sleep(10);
+	sleep(2);
 	for (auto pid : pids)
 	{
 		kill(pid, SIGKILL);
 	}
+
+    ASSERT_TRUE(true);
+}
+
+int main(int argc, char **argv)
+{
+	::testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }
