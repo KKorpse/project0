@@ -38,15 +38,21 @@ class CircleTaskQueue
 
   private:
 	void AddDataToQueue(const char *data, size_t size);
-	void GetDataFromQueue(char *&data);
+	size_t GetDataFromQueue(char *&data);
 
   public:
 	CircleTaskQueue(TaskFunctionPointer);
 	~CircleTaskQueue();
 
-	/* Called by main process*/
+	/*
+	 * @brief Called by main process
+	 */
 	void Init();
 
 	void AddTask(const char *args, const size_t size);
-	void GetTask(char *&args, TaskFunctionPointer &func);
+
+	/*
+	 *  @return the size of args. 0 if failed.
+	 */
+	size_t GetTask(char *&args, TaskFunctionPointer &func);
 };

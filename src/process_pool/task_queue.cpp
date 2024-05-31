@@ -97,7 +97,7 @@ void CircleTaskQueue::AddDataToQueue(const char *data, size_t size)
 	sem_post(&m_pSharedMemory->semaphore);
 }
 
-void CircleTaskQueue::GetDataFromQueue(char *&data)
+size_t CircleTaskQueue::GetDataFromQueue(char *&data)
 {
 	if (m_pSharedMemory == nullptr)
 	{
@@ -108,7 +108,7 @@ void CircleTaskQueue::GetDataFromQueue(char *&data)
 			perror("mmap");
 			std::cerr << "mmap failed" << std::endl;
 			data = nullptr;
-			return;
+			return 0;
 		}
 	}
 
@@ -120,7 +120,7 @@ void CircleTaskQueue::GetDataFromQueue(char *&data)
 		// std::cout << "Queue is empty" << std::endl;
 		sem_post(&m_pSharedMemory->semaphore);
 		data = nullptr;
-		return;
+		return 0;
 	}
 
 	size_t data_size;
@@ -141,11 +141,13 @@ void CircleTaskQueue::GetDataFromQueue(char *&data)
 		m_pSharedMemory->head = second_size;
 	}
 	sem_post(&m_pSharedMemory->semaphore);
+	return data_size;
 }
 
 void CircleTaskQueue::AddTask(const char *args, const size_t size) { AddDataToQueue(args, size); }
-void CircleTaskQueue::GetTask(char *&args, TaskFunctionPointer &func)
+size_t CircleTaskQueue::GetTask(char *&args, TaskFunctionPointer &func)
 {
-	GetDataFromQueue(args);
+	auto size = GetDataFromQueue(args);
 	func = m_fpTaskFunctionPointer;
+	return size;
 }
