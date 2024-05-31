@@ -116,7 +116,6 @@ size_t CircleTaskQueue::GetDataFromQueue(char *&data)
 	sem_wait(&m_pSharedMemory->semaphore);
 	if (m_pSharedMemory->head == m_pSharedMemory->tail)
 	{
-		// std::cout << "Queue is empty" << std::endl;
 		data = nullptr;
 		return 0;
 	}

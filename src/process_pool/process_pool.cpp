@@ -32,14 +32,26 @@ void ProcessPool::WorkerProcess()
 	TaskFunctionPointer func = nullptr;
 	while (1)
 	{
-		m_TaskQueue.GetTask(args, func);
-		if (args != nullptr)
+		if (m_TaskType == ProcessPoolTaskType::kTaskTypeFd)
 		{
-			assert(func != nullptr);
-			func(args);
-			// args own the memory.
-			delete args;
-			args = nullptr;
+			auto fd = m_TaskQueue.GetFd(func);
+			if (fd >= 0)
+			{
+				func(reinterpret_cast<char *>(&fd));
+			}
+			func = nullptr;
+		}
+		else
+		{
+			m_TaskQueue.GetTask(args, func);
+			if (args != nullptr)
+			{
+				assert(func != nullptr);
+				func(args);
+				// args own the memory.
+				delete args;
+				args = nullptr;
+			}
 		}
 	}
 }

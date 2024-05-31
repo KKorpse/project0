@@ -33,5 +33,5 @@ class FdCircleTaskQueue : public CircleTaskQueue
 	 */
 	void AddFd(int fd);
 
-	void GetFdTask(int &fd, TaskFunctionPointer &func);
+	int GetFd(TaskFunctionPointer &func);
 };

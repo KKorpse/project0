@@ -52,7 +52,7 @@ void FdCircleTaskQueue::AddFd(int fd)
 	sem_post(&m_pSharedMemory->semaphore);
 }
 
-void FdCircleTaskQueue::GetFdTask(int &fd, TaskFunctionPointer &func)
+int FdCircleTaskQueue::GetFd(TaskFunctionPointer &func)
 {
 	if (m_pSharedMemory == nullptr)
 	{
@@ -61,7 +61,7 @@ void FdCircleTaskQueue::GetFdTask(int &fd, TaskFunctionPointer &func)
 		if (m_pSharedMemory == MAP_FAILED)
 		{
 			std::cerr << "mmap failed" << std::endl;
-			return;
+			return -1;
 		}
 	}
 	assert(m_pSharedMemory != nullptr);
@@ -82,7 +82,7 @@ void FdCircleTaskQueue::GetFdTask(int &fd, TaskFunctionPointer &func)
 	if (recvmsg(m_iaUnixSockt[1], &msg, 0) < 0)
 	{
 		perror("recvmsg");
-		return;
+		return -1;
 	}
 
 	struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
@@ -90,9 +90,9 @@ void FdCircleTaskQueue::GetFdTask(int &fd, TaskFunctionPointer &func)
 	if (cmsg == NULL || cmsg->cmsg_type != SCM_RIGHTS)
 	{
 		std::cerr << "No passed fd" << std::endl;
-		return;
+		return -1;
 	}
 
-	fd = *((int *)CMSG_DATA(cmsg));
 	func = m_fpTaskFunctionPointer;
+    return *((int *)CMSG_DATA(cmsg));
 }
