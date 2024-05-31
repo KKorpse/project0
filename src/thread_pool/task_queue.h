@@ -23,8 +23,8 @@ class CircleTaskQueue
 	struct SharedMemory
 	{
 		sem_t semaphore;
-		int head;
-		int tail;
+		int head = 0;
+		int tail = 0;
 		/*
 		 * Data encoding format: {size, data}.
 		 */

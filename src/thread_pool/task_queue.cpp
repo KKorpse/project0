@@ -95,8 +95,6 @@ void CircleTaskQueue::AddDataToQueue(const char *data, size_t size)
 	}
 
 	sem_post(&m_pSharedMemory->semaphore);
-
-	std::cout << "Data added: " << std::string(data, size) << std::endl;
 }
 
 void CircleTaskQueue::GetDataFromQueue(char *&data)
@@ -119,7 +117,7 @@ void CircleTaskQueue::GetDataFromQueue(char *&data)
 	sem_wait(&m_pSharedMemory->semaphore);
 	if (m_pSharedMemory->head == m_pSharedMemory->tail)
 	{
-		std::cout << "Queue is empty" << std::endl;
+		// std::cout << "Queue is empty" << std::endl;
 		sem_post(&m_pSharedMemory->semaphore);
 		data = nullptr;
 		return;
@@ -129,6 +127,7 @@ void CircleTaskQueue::GetDataFromQueue(char *&data)
 	memcpy(&data_size, m_pSharedMemory->message + m_pSharedMemory->head, sizeof(size_t));
 	if (m_pSharedMemory->head + sizeof(size_t) + data_size < kDEFAULT_SHARED_MEMORY_SIZE)
 	{
+		data = new char[data_size];
 		memcpy(data, m_pSharedMemory->message + m_pSharedMemory->head + sizeof(size_t), data_size);
 		m_pSharedMemory->head += sizeof(size_t) + data_size;
 	}
@@ -142,7 +141,6 @@ void CircleTaskQueue::GetDataFromQueue(char *&data)
 		m_pSharedMemory->head = second_size;
 	}
 	sem_post(&m_pSharedMemory->semaphore);
-	std::cout << "Get queue.";
 }
 
 void CircleTaskQueue::AddTask(const char *args, const size_t size) { AddDataToQueue(args, size); }

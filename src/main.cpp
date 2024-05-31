@@ -23,14 +23,10 @@ void ChiledProcess(CircleTaskQueue que)
 		{
 			assert(func != nullptr);
 			func(args);
+			// args own the memory.
+			delete args;
+			args = nullptr;
 		}
-		else
-		{
-			std::cout << "Failed to get task\n";
-			sleep(1);
-		}
-		// args do not own the memory.
-		args = nullptr;
 	}
 }
 
@@ -39,7 +35,6 @@ int main(int argc, char *argv[])
 {
 	CircleTaskQueue que(SingleTask);
 	que.Init();
-	// fork 4 process
 	std::vector<int> pids;
 	for (int i = 0; i < 4; ++i)
 	{
@@ -47,8 +42,10 @@ int main(int argc, char *argv[])
 		if (pid == 0)
 		{
 			ChiledProcess(que);
+			return 0;
 		}
-		else {
+		else
+		{
 			pids.emplace_back(pid);
 		}
 	}
@@ -59,7 +56,8 @@ int main(int argc, char *argv[])
 	}
 
 	sleep(10);
-	for (auto pid : pids) {
+	for (auto pid : pids)
+	{
 		kill(pid, SIGKILL);
 	}
 }
