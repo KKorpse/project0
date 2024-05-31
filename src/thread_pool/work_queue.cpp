@@ -1,17 +1,17 @@
-#include "task_queue.h"
+#include "work_queue.h"
 #include <mutex>
 
 WorkQueue::WorkQueue() {}
 
 WorkQueue::~WorkQueue() {}
 
-void WorkQueue::AddWork(std::unique_ptr<Task> pWork)
+void WorkQueue::AddWork(std::unique_ptr<Work> pWork)
 {
 	std::unique_lock<std::mutex> lock(m_mtxQueue);
 	m_queWorks.emplace(std::move(pWork));
 }
 
-std::unique_ptr<Task> WorkQueue::GetWork()
+std::unique_ptr<Work> WorkQueue::GetWork()
 {
 	std::unique_lock<std::mutex> lock(m_mtxQueue);
 	if (m_queWorks.empty())

@@ -10,7 +10,7 @@ TEST(SampleTest, OutputTest)
 	int32_t cnt = 0;
 	for (int i = 0; i < 100; i++)
 	{
-		std::unique_ptr<Task> pWork(new Task([i, &cnt]() { cnt++; }));
+		std::unique_ptr<Work> pWork(new Work([i, &cnt]() { cnt++; }));
 		threadPool.AddWork(std::move(pWork));
 	}
 

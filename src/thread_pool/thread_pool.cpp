@@ -33,4 +33,4 @@ void ThreadWorkerPool::Shutdown()
 	}
 }
 
-void ThreadWorkerPool::AddWork(std::unique_ptr<Task> pWork) { m_WorkQueue.AddWork(std::move(pWork)); }
+void ThreadWorkerPool::AddWork(std::unique_ptr<Work> pWork) { m_WorkQueue.AddWork(std::move(pWork)); }

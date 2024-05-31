@@ -32,7 +32,7 @@ void EchoServer::Start()
 				    break;
 			    }
 			    std::cout << "Accepted connection" << std::endl;
-			    std::unique_ptr<Task> pWork(new Task(
+			    std::unique_ptr<Work> pWork(new Work(
 			        [iClientSocket]()
 			        {
 				        std::string sMessage = ServerSocket::ReadFrom(iClientSocket);

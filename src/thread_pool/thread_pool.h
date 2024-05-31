@@ -19,5 +19,5 @@ class ThreadWorkerPool : public WorkerPool
 
 	void Init() override;
 	void Shutdown()override;
-  	void AddWork(std::unique_ptr<Task> pWork) override;
+  	void AddWork(std::unique_ptr<Work> pWork) override;
 };

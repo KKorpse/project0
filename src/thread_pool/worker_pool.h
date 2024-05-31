@@ -19,5 +19,5 @@ class WorkerPool
 
 	virtual void Init() = 0;
 	virtual void Shutdown() = 0;
-	virtual void AddWork(std::unique_ptr<Task> pWork) = 0;
+	virtual void AddWork(std::unique_ptr<Work> pWork) = 0;
 };
