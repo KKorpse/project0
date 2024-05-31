@@ -66,7 +66,6 @@ void CircleTaskQueue::AddDataToQueue(const char *data, size_t size)
 
 	assert(m_pSharedMemory != nullptr);
 
-	sem_wait(&m_pSharedMemory->semaphore);
 	if (m_pSharedMemory->tail + size + sizeof(size_t) > kDEFAULT_SHARED_MEMORY_SIZE &&
 	    (m_pSharedMemory->tail + size + sizeof(size_t)) % kDEFAULT_SHARED_MEMORY_SIZE > m_pSharedMemory->head)
 	{
@@ -118,7 +117,6 @@ size_t CircleTaskQueue::GetDataFromQueue(char *&data)
 	if (m_pSharedMemory->head == m_pSharedMemory->tail)
 	{
 		// std::cout << "Queue is empty" << std::endl;
-		sem_post(&m_pSharedMemory->semaphore);
 		data = nullptr;
 		return 0;
 	}
@@ -140,7 +138,6 @@ size_t CircleTaskQueue::GetDataFromQueue(char *&data)
 		memcpy(data + first_size, m_pSharedMemory->message, second_size);
 		m_pSharedMemory->head = second_size;
 	}
-	sem_post(&m_pSharedMemory->semaphore);
 	return data_size;
 }
 
