@@ -15,7 +15,8 @@ file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/thread_pool/*.cpp" "
 # add the executable
 add_executable(MyProject src/main.cpp ${SOURCES})
 
-target_link_libraries(MyProject PRIVATE Threads::Threads)
+# Link against Threads and rt libraries
+target_link_libraries(MyProject PRIVATE Threads::Threads rt)
 
 # include directories
 target_include_directories(MyProject PRIVATE 
@@ -41,8 +42,8 @@ foreach(TEST_SOURCE ${TEST_SOURCES})
     # Create an executable for each test
     add_executable(${TEST_NAME} ${TEST_SOURCE} ${SOURCES})
     
-    # Link the test executable against gtest and gtest_main
-    target_link_libraries(${TEST_NAME} ${GTEST_LIBRARIES} Threads::Threads)
+    # Link the test executable against gtest, gtest_main, Threads, and rt
+    target_link_libraries(${TEST_NAME} ${GTEST_LIBRARIES} Threads::Threads rt)
     
     # Include directories for tests
     target_include_directories(${TEST_NAME} PRIVATE 
