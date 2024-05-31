@@ -2,19 +2,25 @@
 #include "thread_pool/thread_pool.h"
 #include <memory>
 
+enum class PoolType
+{
+	kThread,
+	kProcess
+};
+
 class EchoServer
 {
   private:
-	int m_iPort = 0;
 	ThreadWorkerPool m_ThreadPool;
 	ServerSocket m_pServerSocket;
 	std::thread m_tdListenThread;
 	bool m_bIsStopped = false;
+	PoolType m_PoolType = PoolType::kThread;
 
-	static const int s_iDefaultThreadPoolSize = 10;
+	static const int s_iDefaultPoolSize = 10;
 
   public:
-	EchoServer(int iPort, int iThreadPoolSize = s_iDefaultThreadPoolSize);
+	EchoServer(int iPort, int iThreadPoolSize = s_iDefaultPoolSize, PoolType poolType = PoolType::kThread);
 	~EchoServer();
 
 	void Start();

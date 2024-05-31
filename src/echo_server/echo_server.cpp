@@ -1,8 +1,8 @@
 #include "echo_server.h"
 #include <memory>
 
-EchoServer::EchoServer(int iPort, int iThreadPoolSize)
-    : m_iPort(iPort), m_ThreadPool(iThreadPoolSize), m_pServerSocket(iPort)
+EchoServer::EchoServer(int port, int pool_size, PoolType pool_type)
+    : m_ThreadPool(pool_size), m_pServerSocket(port), m_PoolType(pool_type)
 {
 }
 
@@ -25,20 +25,19 @@ void EchoServer::Start()
 			    }
 
 			    // TODO: Better way?
-			    int iClientSocket = m_pServerSocket.Accept();
-			    if (iClientSocket < 0)
+			    int client_socket = m_pServerSocket.Accept();
+			    if (client_socket < 0)
 			    {
 				    std::cerr << " Error when accepting client connection" << std::endl;
 				    break;
 			    }
 			    std::cout << "Accepted connection" << std::endl;
 			    std::unique_ptr<Work> pWork(new Work(
-			        [iClientSocket]()
+			        [client_socket]()
 			        {
-				        std::string sMessage = ServerSocket::ReadFrom(iClientSocket);
-				        ServerSocket::SendTo(sMessage, iClientSocket);
-				        // FIXME: Should I close the socket here?
-				        close(iClientSocket);
+				        std::string sMessage = ServerSocket::ReadFrom(client_socket);
+				        ServerSocket::SendTo(sMessage, client_socket);
+				        close(client_socket);
 			        }));
 			    m_ThreadPool.AddWork(std::move(pWork));
 		    }

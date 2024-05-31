@@ -16,7 +16,7 @@ typedef std::function<void(char *vArgs)> TaskFunctionPointer;
  */
 class CircleTaskQueue
 {
-  private:
+  protected:
 	static const size_t kDEFAULT_TASK_SIZE = 16;
 	static const size_t kDEFAULT_SHARED_MEMORY_SIZE = 4096;
 
@@ -36,7 +36,7 @@ class CircleTaskQueue
 	SharedMemory *m_pSharedMemory = nullptr;
 	TaskFunctionPointer m_fpTaskFunctionPointer = nullptr;
 
-  private:
+  protected:
 	void AddDataToQueue(const char *data, size_t size);
 	size_t GetDataFromQueue(char *&data);
 
