@@ -7,8 +7,9 @@
 
 // simple test of echoserver
 int main(int argc, char *argv[])
-{
-	EchoServer echoServer(9999, 10, PoolType::kProcess);
+{	
+	// TODO: Use argument to determine the pool type
+	EchoServer echoServer(9999, 10, PoolType::kThread);
 	echoServer.Start();
 	sleep(30);
 }
